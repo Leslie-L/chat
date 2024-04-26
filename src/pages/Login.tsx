@@ -1,7 +1,7 @@
 import { Navigate, useNavigate } from "react-router-dom"
 import loginGoogle from "../db/services/loginGoogle"
 import useUser from "../providers/useUser"
-import {  useState } from "react"
+import {  useEffect, useState } from "react"
 import FormSignIn from "../components/login/FormSignIn"
 import FormRegister from "../components/login/FormRegister"
 
@@ -18,6 +18,7 @@ function Login() {
     }
 
     const handleSignInDisplay = ()=> setIsSignIn(!isSignIn);
+  
     const loginWithGoogle = async()=>{
         try {
              const user = await loginGoogle()
@@ -67,7 +68,7 @@ function Login() {
                     </div>
 
                     {
-                        isSignIn ? <FormSignIn/> : <FormRegister/>
+                        isSignIn ? <FormSignIn setError={setError} setMessageError={setMessageError}/> : <FormRegister setError={setError} setMessageError={setMessageError}/>
                     }
                     
 

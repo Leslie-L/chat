@@ -1,9 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import useUser from "../../providers/useUser";
 import loginWithEmailPassword from "../../db/services/loginEmailAndPassword";
-import { FormEvent } from "react";
-
-function FormSignIn() {
+import { FormEvent,Dispatch, SetStateAction } from "react";
+type FormSignInProps = {
+    setError: Dispatch<SetStateAction<boolean>>,
+    setMessageError: Dispatch<SetStateAction<string>>
+}
+function FormSignIn({setError,setMessageError}:FormSignInProps) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const {setCurrentUser}  = useUser()
@@ -19,9 +22,13 @@ function FormSignIn() {
             if(user){
                 setCurrentUser(user)
                 navigate('/')
+            }else{
+                setError(true)
+                setMessageError('Check your user and password')
             }
         } catch (error) {
-            console.log(error)
+            setError(true)
+            setMessageError('Check your user and password')
         }
 
         
