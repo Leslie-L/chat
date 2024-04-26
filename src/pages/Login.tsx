@@ -7,6 +7,8 @@ import FormRegister from "../components/login/FormRegister"
 
 function Login() {
     const [isSignIn, setIsSignIn] = useState(true);
+    const [error,setError] = useState(false)
+    const [messageError, setMessageError] = useState('')
     const navigate = useNavigate()
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -22,11 +24,21 @@ function Login() {
              setCurrentUser(user)
              navigate('/');
         } catch (error) {
+            setError(true)
+            setMessageError('There was an error, try again')
             console.log('error')
         }
     }
     return(
         <main className="w-full h-screen bg-[#dfe1e5]">
+            {
+                error && 
+                <div className="w-48 h-12 rounded-xl bg-red-600 text-white font-semibold fixed top-8 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+                    <p className="w-full text-center">
+                        {messageError}
+                    </p>
+                </div>
+            }
             <section className="w-full h-52 p-3 bg-[#00a884] relative flex justify-center items-center">
                 <div className="w-72 md:w-[500px] bg-white  absolute top-1/3 p-3 rounded-lg flex flex-col justify-center items-center">
                     <h1 className="text-black text-2xl font-bold my-2">{isSignIn ? 'Sign In': 'Register'}</h1>
