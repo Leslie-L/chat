@@ -10,7 +10,7 @@ function Home() {
 
     if(!currentUser)
         return <Navigate to="/login" replace/>
-    
+    console.log(currentUser)
     const handleLogOut =async()=>{
         await logout()
         setCurrentUser(null)

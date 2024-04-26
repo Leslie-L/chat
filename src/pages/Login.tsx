@@ -4,19 +4,39 @@ import useUser from "../providers/useUser"
 import {  useEffect, useState } from "react"
 import FormSignIn from "../components/login/FormSignIn"
 import FormRegister from "../components/login/FormRegister"
+import { getRedirectResult } from "firebase/auth"
+import { auth } from "../db/credentials"
+import insertUser from "../db/services/Firebase/insertUser"
 
 function Login() {
     const [isSignIn, setIsSignIn] = useState(true);
     const [error,setError] = useState(false)
     const [messageError, setMessageError] = useState('')
     const navigate = useNavigate()
+    useEffect(()=>{
+        
+        getRedirectResult(auth).then(userCre=>{
+            
+            if(userCre){
+                const user = userCre.user;
+                const userData = {
+                    name: user?.displayName || user?.email || "NAME",
+                    email: user.email || 'MAIL',
+                    uid: user.uid,
+                    photo: user.photoURL || null 
+                };
+        
+                insertUser(userData).then();
+            }
+        })
+    },[])
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const {currentUser,setCurrentUser}  = useUser()
     if(currentUser){
         return <Navigate to="/" replace/>
     }
-
+    
     const handleSignInDisplay = ()=> setIsSignIn(!isSignIn);
   
     const loginWithGoogle = async()=>{

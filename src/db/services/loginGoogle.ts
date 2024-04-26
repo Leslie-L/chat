@@ -1,12 +1,13 @@
 import { auth } from "../credentials";
-import {GoogleAuthProvider, signInWithRedirect} from 'firebase/auth';
+import {GoogleAuthProvider, onAuthStateChanged, signInWithRedirect} from 'firebase/auth';
+import insertUser from "./Firebase/insertUser";
 
 
 async function loginGoogle() {
     try {
         const provider = new GoogleAuthProvider()
-        const user =await signInWithRedirect(auth,provider)
-        console.log(user)
+       await signInWithRedirect(auth,provider)        
+        
     } catch (e) {
         console.log(e)
     }
