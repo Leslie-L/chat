@@ -1,12 +1,12 @@
 import { Navigate, useNavigate } from "react-router-dom"
 import loginGoogle from "../db/services/loginGoogle"
 import useUser from "../providers/useUser"
-import { useEffect, useState } from "react"
+import {  useState } from "react"
 import FormSignIn from "../components/login/FormSignIn"
 import FormRegister from "../components/login/FormRegister"
 
 function Login() {
-
+    const [isSignIn, setIsSignIn] = useState(true);
     const navigate = useNavigate()
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -15,7 +15,6 @@ function Login() {
         return <Navigate to="/" replace/>
     }
 
-    const [isSignIn, setIsSignIn] = useState(true);
     const handleSignInDisplay = ()=> setIsSignIn(!isSignIn);
     const loginWithGoogle = async()=>{
         try {
