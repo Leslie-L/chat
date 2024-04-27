@@ -10,6 +10,7 @@ function Home() {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { currentUser, setCurrentUser } = useUser();
+  const [isOpen,setIsOpen] = useState(true)
   const [friends, setFriends] = useState([])
 
   if (!currentUser) return <Navigate to="/login" replace />;
@@ -21,29 +22,33 @@ function Home() {
   };
   return (
     <main className="w-full h-screen flex flex-col md:flex-row">
-      <Navbar handleLogOut={handleLogOut}/>
-      <aside className="h-screen w-full md:max-w-xs bg-[#ECE5DD] overflow-x-auto scroll-bar ">
+      <Navbar handleLogOut={handleLogOut} setIsOpen={setIsOpen} isOpen={isOpen}/>
+      {isOpen &&
+            <aside className="h-screen w-full md:max-w-xs bg-[#ECE5DD] overflow-x-auto scroll-bar ">
+                
+            <input type="text" className=" h-10 w-11/12 m-2 p-2 bg-[#2a3942] rounded-lg" placeholder="Search" />
+            
+            <Contact/>
+            <Contact/>
+            <Contact/>
+            <Contact/>
+            <Contact/>
+            <Contact/>
+            <Contact/>
+            <Contact/>
+            <Contact/>
+            <Contact/>
+            <Contact/>
+            <Contact/>
+            <Contact/>
+            <Contact/>
+            <Contact/>
+            <Contact/>
         
-        <input type="text" className=" h-10 w-11/12 m-2 p-2 bg-[#2a3942] rounded-lg" placeholder="Search" />
-        
-        <Contact/>
-        <Contact/>
-        <Contact/>
-        <Contact/>
-        <Contact/>
-        <Contact/>
-        <Contact/>
-        <Contact/>
-        <Contact/>
-        <Contact/>
-        <Contact/>
-        <Contact/>
-        <Contact/>
-        <Contact/>
-        <Contact/>
-        <Contact/>
-      </aside>
-      <section className="w-full flex flex-col justify-between">
+            </aside>
+      }
+      
+      <section className="w-full h-screen flex flex-col justify-between">
         <div className="bg-[#128C7E] h-16 flex gap-x-3 items-center px-2">
             <div className="bg-[#25D366] h-12 w-12 rounded-full text-white flex justify-center items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256">
