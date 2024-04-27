@@ -4,6 +4,7 @@ import useUser from "../providers/useUser";
 import Navbar from "../components/home/Navbar";
 import { useState } from "react";
 import Contact from "../components/home/Contact";
+import Message from "../components/home/Message";
 
 function Home() {
   const navigate = useNavigate();
@@ -24,26 +25,22 @@ function Home() {
     <main className="w-full h-screen flex flex-col md:flex-row">
       <Navbar handleLogOut={handleLogOut} setIsOpen={setIsOpen} isOpen={isOpen}/>
       {isOpen &&
-            <aside className="h-screen w-full md:max-w-xs bg-[#ECE5DD] overflow-x-auto scroll-bar ">
+            <aside className="h-screen w-full md:max-w-xs bg-[#ECE5DD] flex flex-col justify-between ">
                 
             <input type="text" className=" h-10 w-11/12 m-2 p-2 bg-[#2a3942] rounded-lg" placeholder="Search" />
+            <div className="overflow-x-auto scroll-bar flex-grow">
+              <Contact/>
+              <Contact/>
+              <Contact/>
+              <Contact/>
+              
+            </div>
             
-            <Contact/>
-            <Contact/>
-            <Contact/>
-            <Contact/>
-            <Contact/>
-            <Contact/>
-            <Contact/>
-            <Contact/>
-            <Contact/>
-            <Contact/>
-            <Contact/>
-            <Contact/>
-            <Contact/>
-            <Contact/>
-            <Contact/>
-            <Contact/>
+            <button className="w-12 h-12 m-3 rounded-full text-white grid place-content-center  bg-[#25D366] self-end">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                  <path fill="currentColor" d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10a9.96 9.96 0 0 1-4.644-1.142l-4.29 1.117a.85.85 0 0 1-1.037-1.036l1.116-4.289A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2m.75 5.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5z" />
+                </svg>
+            </button>
         
             </aside>
       }
@@ -60,8 +57,8 @@ function Home() {
             </p>
         </div>
         <div className="w-full p-4 flex-grow flex-shrink bg-[#ECE5DD] overflow-x-auto scroll-bar flex flex-col justify-end">
-            <p  className="p-2 text-normal bg-[#2a3942] text-white self-start rounded-md">Message to me</p>
-            <p className="p-2 text-normal bg-[#005c4b] text-white self-end rounded-md">Message to my friend </p>
+           <Message id={'1'} msn={'This is a new message'} me={true}/>
+           <Message id={'2'} msn={'This is a new message'} me={false}/>
         </div>
         <div className="w-full h-16 bg-[#128C7E] flex justify-center items-center gap-x-2">
             <input type="text" placeholder="Write a message" className=" w-3/4 h-10 p-2 bg-[#ECE5DD] rounded-lg" />
