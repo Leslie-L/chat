@@ -5,6 +5,8 @@ import Navbar from "../components/home/Navbar";
 import { useState } from "react";
 import Contact from "../components/home/Contact";
 import Message from "../components/home/Message";
+import AddContact from "../components/home/AddContact";
+import NotificationNewContacts from "../components/home/NotificationNewContacts";
 
 function Home() {
   const navigate = useNavigate();
@@ -12,6 +14,7 @@ function Home() {
   // @ts-ignore
   const { currentUser, setCurrentUser } = useUser();
   const [isOpen,setIsOpen] = useState(true)
+  const [openModal, setOpenModal] = useState(false)
   const [friends, setFriends] = useState([])
 
   if (!currentUser) return <Navigate to="/login" replace />;
@@ -26,25 +29,34 @@ function Home() {
       <Navbar handleLogOut={handleLogOut} setIsOpen={setIsOpen} isOpen={isOpen}/>
       {isOpen &&
             <aside className="h-screen w-full md:max-w-xs bg-[#ECE5DD] flex flex-col justify-between ">
+              <NotificationNewContacts/>
+              <input type="text" className=" h-10 w-11/12 m-2 p-2 bg-[#2a3942] rounded-lg" placeholder="Search" />
+              <div className="overflow-x-auto scroll-bar flex-grow">
+                <Contact/>
+                <Contact/>
+                <Contact/>
+                <Contact/>
                 
-            <input type="text" className=" h-10 w-11/12 m-2 p-2 bg-[#2a3942] rounded-lg" placeholder="Search" />
-            <div className="overflow-x-auto scroll-bar flex-grow">
-              <Contact/>
-              <Contact/>
-              <Contact/>
-              <Contact/>
-              
-            </div>
+              </div>
             
-            <button className="w-12 h-12 m-3 rounded-full text-white grid place-content-center  bg-[#25D366] self-end">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                  <path fill="currentColor" d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10a9.96 9.96 0 0 1-4.644-1.142l-4.29 1.117a.85.85 0 0 1-1.037-1.036l1.116-4.289A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2m.75 5.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5z" />
-                </svg>
-            </button>
+              <AddContact handlerModal={setOpenModal}/>
         
             </aside>
       }
-      
+      {
+        openModal && <article className="fixed w-80 p-4 top-1/2 left-1/2  transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg text-black">
+            <button className="text-gray-500 self-end">
+              <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24">
+                <path fill="currentColor" fillRule="evenodd" d="M6.793 6.793a1 1 0 0 1 1.414 0L12 10.586l3.793-3.793a1 1 0 1 1 1.414 1.414L13.414 12l3.793 3.793a1 1 0 0 1-1.414 1.414L12 13.414l-3.793 3.793a1 1 0 0 1-1.414-1.414L10.586 12L6.793 8.207a1 1 0 0 1 0-1.414" clipRule="evenodd"></path>
+              </svg>
+            </button>
+            <h2 className="font-bold text-xl text-center">Add a new Friend</h2>
+            <form action="" className="w-full">
+              <input type="text" name="email" id="email" placeholder="Search for email"  className=" p-2 bg-[#ECE5DD] rounded-lg" />
+              <button type="submit" className="ml-2 p-2 rounded-md bg-[#25D366] text-white font-bold">Search</button>
+            </form>
+        </article>
+      }
       <section className="w-full h-screen flex flex-col justify-between">
         <div className="bg-[#128C7E] h-16 flex gap-x-3 items-center px-2">
             <div className="bg-[#25D366] h-12 w-12 rounded-full text-white flex justify-center items-center">
