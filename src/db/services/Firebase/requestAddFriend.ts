@@ -4,10 +4,10 @@ import { db } from "../../credentials";
 
 async function requestAddFriend(ask:string, to:string) {
     try {
-        console.log("here")
+        //console.log("here")
         const docRef = collection(db, "requestfriend");
         const data ={ask,to}
-        console.log(data)
+        //console.log(data)
         await addDoc(docRef, data);
         
     } catch (error) {
