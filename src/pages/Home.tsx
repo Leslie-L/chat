@@ -3,11 +3,13 @@ import logout from "../db/services/logout";
 import useUser from "../providers/useUser";
 import Navbar from "../components/home/Navbar";
 import { useEffect, useState } from "react";
-import Contact from "../components/home/Contact";
+
 import Message from "../components/home/Message";
 import AddContact from "../components/home/AddContact";
 import NotificationNewContacts from "../components/home/NotificationNewContacts";
 import ModalNewContact from "../components/home/ModalNewContact";
+import RenderContacts from "../components/home/RenderContacts";
+
 
 function Home() {
   const navigate = useNavigate();
@@ -16,8 +18,9 @@ function Home() {
   const { currentUser, setCurrentUser } = useUser();
   const [isOpen,setIsOpen] = useState(true)
   const [openModal, setOpenModal] = useState(false)
-  const [friends, setFriends] = useState([])
   const [width, setWidth] = useState(window.innerWidth);
+
+  
 
   useEffect(() => {
     const handleResize = () => {
@@ -32,13 +35,14 @@ function Home() {
   }, []);
   
   if (!currentUser) return <Navigate to="/login" replace />;
-  console.log(currentUser)
-
+  
   const handleLogOut = async () => {
     await logout();
     setCurrentUser(null);
     navigate("/login");
   };
+
+
   return (
     <main className="w-full h-screen flex flex-col md:flex-row">
       <Navbar handleLogOut={handleLogOut} setIsOpen={setIsOpen} isOpen={isOpen}/>
@@ -46,14 +50,7 @@ function Home() {
             <aside className="h-screen w-full md:max-w-xs bg-[#ECE5DD] flex flex-col justify-between ">
               <NotificationNewContacts/>
               <input type="text" className=" h-10 w-11/12 m-2 p-2 bg-[#2a3942] rounded-lg" placeholder="Search" />
-              <div className="overflow-x-auto scroll-bar flex-grow">
-                <Contact/>
-                <Contact/>
-                <Contact/>
-                <Contact/>
-                
-              </div>
-            
+              <RenderContacts/>
               <AddContact handlerModal={setOpenModal}/>
         
             </aside>
