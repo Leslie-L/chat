@@ -25,6 +25,7 @@ function Home() {
     message:"",
     color:""
   })
+
   
 
   useEffect(() => {
@@ -59,7 +60,7 @@ function Home() {
       <Navbar handleLogOut={handleLogOut} setIsOpen={setIsOpen} isOpen={isOpen}/>
       {isOpen &&
             <aside className="h-screen w-full md:max-w-xs bg-[#ECE5DD] flex flex-col justify-between ">
-              <NotificationNewContacts/>
+              <NotificationNewContacts controlModal={controlPopup} setPopupMessage={setPopupMessage} />
               <input type="text" className=" h-10 w-11/12 m-2 p-2 bg-[#2a3942] rounded-lg" placeholder="Search" />
               <RenderContacts/>
               <AddContact handlerModal={setOpenModal}/>
