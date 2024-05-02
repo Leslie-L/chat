@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useLayoutEffect } from "react";
 import {
   query,
   collection,
@@ -18,23 +18,23 @@ type UserFriend = {
   photo: string | null;
   uid: string;
 };
-const friendRef = collection(db, "friends");
 function RenderContacts() {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { currentUser } = useUser();
-
   const [userFriends, setUserFriends] = useState<UserFriend[]>([]);
+
   const getUserInfo = async (id: string) => {
     const docRef = doc(db, "users", id);
     const docSnap = await getDoc(docRef);
     return docSnap.data();
   };
-  useEffect(() => {
+  useLayoutEffect(() => {
+  const friendRef = collection(db, "friends");
     const uid = currentUser.uid;
     const q = query(
       friendRef,
-      where("users", "array-contains", currentUser.uid)
+      where("users", "array-contains", uid)
     );
     const unsubscribe = onSnapshot(q, (snapshot) => {
       

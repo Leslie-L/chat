@@ -19,8 +19,9 @@ function FormSignIn({setError,setMessageError}:FormSignInProps) {
         const password = form.get('password') as string
         try {
             const user = await loginWithEmailPassword(email,password);
+            
             if(user){
-                setCurrentUser(user)
+                setCurrentUser(user.user)
                 navigate('/')
             }else{
                 setError(true)
