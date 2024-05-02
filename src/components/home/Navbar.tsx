@@ -55,7 +55,7 @@ function Navbar({handleLogOut,setIsOpen, isOpen}:Props) {
             >
               <defs>
                 <mask id="ipSConfig0">
-                  <g fill="none" stroke-linejoin="round" stroke-width="4">
+                  <g fill="none" strokeLinejoin="round" strokeWidth="4">
                     <path
                       fill="#fff"
                       stroke="#fff"
