@@ -1,8 +1,15 @@
 import { useState } from "react";
 import searchUser from "../../db/services/Firebase/searchUset"
+import requestAddFriend from "../../db/services/Firebase/requestAddFriend";
+import useUser from "../../providers/useUser";
 
 interface Props {
-    handlerModal:React.Dispatch<React.SetStateAction<boolean>>
+    handlerModal:React.Dispatch<React.SetStateAction<boolean>>,
+    controlModal: () => Promise<void>,
+    setPopupMessage:React.Dispatch<React.SetStateAction<{
+        message: string;
+        color: string;
+    }>>
 }
 type Friend = {
     photo: string | null,
@@ -12,7 +19,10 @@ type Friend = {
     friend:boolean
 }
 
-function ModalNewContact({handlerModal}:Props) {
+function ModalNewContact({handlerModal, controlModal,setPopupMessage}:Props) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const { currentUser } = useUser();
     const [friend, setFriend] =useState<Friend|null>(null)
     const [isLoading, setIsLoading]= useState(false);
     const [friendUpdated, setFriendUpdated] =useState(false)
@@ -35,6 +45,23 @@ function ModalNewContact({handlerModal}:Props) {
             console.log("No result");
         }
         setIsLoading(false)
+    }
+    const handlerContact =async (to:string)=>{
+        try {
+            await requestAddFriend(currentUser.uid,to)
+            handlerModal(state=>!state)
+            setPopupMessage({
+                message:"Request sent",
+                color:"#25D366"
+            })
+        } catch (error) {
+            setPopupMessage({
+                message:"Error try again",
+                color:"#950012"
+            })
+        }
+       
+        await controlModal()
     }
     return(
         <article className="fixed w-80 p-4 top-1/2 left-1/2  transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg text-black">
@@ -80,7 +107,7 @@ function ModalNewContact({handlerModal}:Props) {
                     </div>
                     {
                         friend?.friend === false &&
-                        <button className="p-2 rounded-md bg-[#25D366] text-white ">Add </button>
+                        <button onClick={()=>handlerContact(friend.uid)} className="p-2 rounded-md bg-[#25D366] text-white ">Add </button>
                     }
                     {
                          friend?.friend &&

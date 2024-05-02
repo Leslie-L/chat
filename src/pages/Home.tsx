@@ -9,6 +9,7 @@ import AddContact from "../components/home/AddContact";
 import NotificationNewContacts from "../components/home/NotificationNewContacts";
 import ModalNewContact from "../components/home/ModalNewContact";
 import RenderContacts from "../components/home/RenderContacts";
+import Popup from "../components/shared/Popup";
 
 
 function Home() {
@@ -19,7 +20,11 @@ function Home() {
   const [isOpen,setIsOpen] = useState(true)
   const [openModal, setOpenModal] = useState(false)
   const [width, setWidth] = useState(window.innerWidth);
-
+  const [showPopup, setShowPopup] = useState(false)
+  const [popupMessage, setPopupMessage] = useState({
+    message:"",
+    color:""
+  })
   
 
   useEffect(() => {
@@ -42,7 +47,13 @@ function Home() {
     navigate("/login");
   };
 
+  const controlPopup = async ()=>{
+    setShowPopup(true)
+    setTimeout(()=>{
+      setShowPopup(false)
+    },2000)
 
+  }
   return (
     <main className="w-full h-screen flex flex-col md:flex-row">
       <Navbar handleLogOut={handleLogOut} setIsOpen={setIsOpen} isOpen={isOpen}/>
@@ -56,7 +67,11 @@ function Home() {
             </aside>
       }
       {
-        openModal && <ModalNewContact handlerModal={setOpenModal}/>
+        showPopup &&
+        <Popup message={popupMessage.message} color={popupMessage.color}/>
+      }
+      {
+        openModal && <ModalNewContact handlerModal={setOpenModal} controlModal={controlPopup} setPopupMessage={setPopupMessage}/>
       }
       {
         !(isOpen && (width <= 768)) &&
