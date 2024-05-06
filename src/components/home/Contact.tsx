@@ -7,9 +7,12 @@ type UserFriend =  {
     uid:string
   }
 function Contact(item:UserFriend) {
-    const {setCurrentChat} = useCurrentChat()
+    const {setCurrentChat, width, setIsOpen} = useCurrentChat()
     const handlerClick = ()=>{
         setCurrentChat(item)
+        if(width<=768){
+            setIsOpen()
+        }
     }
 
     return(
