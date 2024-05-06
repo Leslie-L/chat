@@ -1,14 +1,14 @@
-import { Dispatch, SetStateAction } from "react"
+
 
 type Props={
     handleLogOut:()=>void,
-    setIsOpen:Dispatch<SetStateAction<boolean>>,
+    setIsOpen:()=>void,
     isOpen:boolean
 }
 function Navbar({handleLogOut,setIsOpen, isOpen}:Props) {
     return(
         <nav className="w-full md:w-12 h-12 md:h-screen px-2 bg-[#128C7E] flex md:flex-col md:py-2 items-center text-white justify-between">
-        <button onClick={()=>setIsOpen(state=>!state)}>
+        <button onClick={setIsOpen}>
           {
             isOpen ?
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 1024 1024">

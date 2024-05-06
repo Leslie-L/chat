@@ -19,19 +19,17 @@ function Home() {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { currentUser, setCurrentUser } = useUser();
-  const {currentChat} = useCurrentChat()
-  const [isOpen,setIsOpen] = useState(true)
+  const {currentChat, width, setWidth, isOpen, setIsOpen} = useCurrentChat()
   const [openModal, setOpenModal] = useState(false)
-  const [width, setWidth] = useState(window.innerWidth);
   const [showPopup, setShowPopup] = useState(false)
   const [popupMessage, setPopupMessage] = useState({
     message:"",
     color:""
   })
-
+  //init the width of the screen
   
-
   useEffect(() => {
+    setWidth(window.innerWidth);
     const handleResize = () => {
       setWidth(window.innerWidth);
     };

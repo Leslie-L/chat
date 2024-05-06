@@ -1,3 +1,5 @@
+import useCurrentChat from "../../providers/useCurrentChat"
+
 type UserFriend =  {
     email:string,
     name:string,
@@ -5,9 +7,15 @@ type UserFriend =  {
     uid:string
   }
 function Contact(item:UserFriend) {
+    const {setCurrentChat} = useCurrentChat()
+    const handlerClick = ()=>{
+        setCurrentChat(item)
+    }
 
     return(
-        <button className="w-full h-16 border-b-2 border-gray-300 p-3 flex justify-center items-center gap-3">
+        <button 
+            onClick={handlerClick}
+            className="w-full h-16 border-b-2 border-gray-300 p-3 flex justify-center items-center gap-3">
             <div className="bg-[#128C7E] h-12 w-12 rounded-full text-white flex justify-center items-center">
                 {
                     item.photo==null &&
