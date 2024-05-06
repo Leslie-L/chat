@@ -8,11 +8,11 @@ type UserFriend = {
   };
 interface ChatStoreState {
     currentChat: UserFriend | null ;
-    setCurrentUser: (user: UserFriend) => void;
+    setCurrentChat: (user: UserFriend) => void;
 }
 const useCurrentChat = create<ChatStoreState>((set):ChatStoreState => ({
   currentChat: null,
-  setCurrentUser:(user) => set({ currentChat: user })
+  setCurrentChat:(user) => set({ currentChat: user })
   
 }))
 export default useCurrentChat
