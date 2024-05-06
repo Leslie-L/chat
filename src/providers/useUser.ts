@@ -5,7 +5,7 @@ interface AuthStoreState {
     currentUser: FirebaseUser | null;
     setCurrentUser: (user: FirebaseUser | null) => void;
 }
-const useUser = create((set):AuthStoreState => ({
+const useUser = create<AuthStoreState>((set):AuthStoreState => ({
   currentUser: null,
   setCurrentUser:(user) => set({ currentUser: user })
   
