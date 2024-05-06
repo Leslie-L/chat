@@ -1,16 +1,28 @@
+import useCurrentChat from "../../../providers/useCurrentChat";
 import Message from "../Message";
 
 function RenderChat() {
+
+    const {currentChat} = useCurrentChat()
+
     return(
         <section className="w-full h-screen flex flex-col justify-between">
           <div className="bg-[#128C7E] h-16 flex gap-x-3 items-center px-2">
               <div className="bg-[#25D366] h-12 w-12 rounded-full text-white flex justify-center items-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256">
-                          <path fill="currentColor" d="M230.93 220a8 8 0 0 1-6.93 4H32a8 8 0 0 1-6.92-12c15.23-26.33 38.7-45.21 66.09-54.16a72 72 0 1 1 73.66 0c27.39 8.95 50.86 27.83 66.09 54.16a8 8 0 0 1 .01 8" />
-                      </svg>
+                    {
+                        currentChat?.photo !==null &&
+                        <img src={currentChat?.photo} alt={currentChat?.name} />
+                    }
+                    {
+                        currentChat?.photo ==null &&
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256">
+                            <path fill="currentColor" d="M230.93 220a8 8 0 0 1-6.93 4H32a8 8 0 0 1-6.92-12c15.23-26.33 38.7-45.21 66.09-54.16a72 72 0 1 1 73.66 0c27.39 8.95 50.86 27.83 66.09 54.16a8 8 0 0 1 .01 8" />
+                        </svg> 
+                    }
+                      
               </div>
               <p className="font-bold text-white text-xl">
-                  Name
+                  {currentChat?.name}
               </p>
           </div>
           <div className="w-full p-4 flex-grow flex-shrink bg-[#ECE5DD] overflow-x-auto scroll-bar flex flex-col justify-end">
