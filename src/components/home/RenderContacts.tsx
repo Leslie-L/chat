@@ -1,4 +1,4 @@
-import { useEffect, useState, useLayoutEffect } from "react";
+import {  useState, useLayoutEffect } from "react";
 import {
   query,
   collection,
@@ -17,6 +17,7 @@ type UserFriend = {
   name: string;
   photo: string | null;
   uid: string;
+  idChat:string;
 };
 function RenderContacts() {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -31,7 +32,7 @@ function RenderContacts() {
   };
   useLayoutEffect(() => {
   const friendRef = collection(db, "friends");
-    const uid = currentUser.uid;
+    const uid = currentUser?.uid;
     const q = query(
       friendRef,
       where("users", "array-contains", uid)
@@ -39,15 +40,18 @@ function RenderContacts() {
     const unsubscribe = onSnapshot(q, (snapshot) => {
       
       snapshot.docs.forEach(async (item) => {
+        const idChat = item.id;
         const [first, second] = item.data().users;
 
         if (first !== uid) {
-          const data = (await getUserInfo(first)) as UserFriend;
+          const dataUser = (await getUserInfo(first));
+          const data = {...dataUser, idChat} as UserFriend;
           setUserFriends((state) => [...state, data]);
           
         }
         if (second !== uid) {
-          const data = (await getUserInfo(second)) as UserFriend;
+          const dataUser = (await getUserInfo(second)) as UserFriend;
+          const data = {...dataUser, idChat} as UserFriend;
           setUserFriends((state) => [...state, data]);
           
         }
@@ -65,6 +69,7 @@ function RenderContacts() {
           email={user.email}
           uid={user.uid}
           photo={user.photo}
+          idChat={user.idChat}
         />
       ))}
     </div>

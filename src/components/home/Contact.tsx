@@ -4,7 +4,8 @@ type UserFriend =  {
     email:string,
     name:string,
     photo: string | null,
-    uid:string
+    uid:string,
+    idChat:string
   }
 function Contact(item:UserFriend) {
     const {setCurrentChat, width, setIsOpen} = useCurrentChat()
