@@ -39,7 +39,7 @@ function NotificationNewContacts({controlModal,setPopupMessage}:Props) {
       };
     useEffect(() => {
         const friendRef = collection(db, "requestfriend");
-          const uid = currentUser.uid;
+          const uid = currentUser?.uid;
           const q = query(
             friendRef,
             where("to", "==", uid)
@@ -63,6 +63,7 @@ function NotificationNewContacts({controlModal,setPopupMessage}:Props) {
     const handlerContact=async (id:string,reqId:string)=>{
         
         try {
+            if(currentUser?.uid)
             await addFriend(id,currentUser.uid,reqId)
             setPopupMessage({
                 message:"You got a new friend!",

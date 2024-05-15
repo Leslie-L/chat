@@ -5,6 +5,7 @@ type UserFriend = {
     name: string;
     photo: string | null;
     uid: string;
+    idChat:string;
   };
 interface ChatStoreState {
     currentChat: UserFriend | null ,
