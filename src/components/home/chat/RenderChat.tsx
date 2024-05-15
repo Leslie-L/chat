@@ -1,13 +1,46 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
+import {
+    
+    doc,
+    onSnapshot,
+  } from "firebase/firestore";
 import useCurrentChat from "../../../providers/useCurrentChat";
 import Message from "../Message";
 import useUser from "../../../providers/useUser";
 import addNewMessage from "../../../db/services/Firebase/addMessage";
+import { db } from "../../../db/credentials";
 
+type DataMessage = {
+    date:number,
+    message:string,
+    receptor:string,
+    sendby:string
+}
 function RenderChat() {
     const {currentUser}=useUser()
     const {currentChat} = useCurrentChat()
     const [text, setText] = useState('')
+    const [msns, setMsns] = useState<DataMessage[]>([]);
+
+    useEffect(() => {
+    const id = currentChat?.idChat 
+    if(id){
+        const chatRef = doc(db,"chats",id); 
+        
+        const unsubscribe = onSnapshot(chatRef,(item) => {
+            if(item.exists()){
+                const messages = item.data().chat as DataMessage[]
+                setMsns(messages)
+            }
+        
+        }, (error) => {
+            console.log("Error al obtener el snapshot:", error);
+        });
+    
+        return () => unsubscribe();
+    }
+   
+    }, []);
     const handlerText = (e:React.ChangeEvent<HTMLInputElement>)=>{
         const val = e.target.value;
          setText(val)
@@ -59,8 +92,14 @@ function RenderChat() {
               </p>
           </div>
           <div className="w-full p-4 flex-grow flex-shrink bg-[#ECE5DD] overflow-x-auto scroll-bar flex flex-col justify-end">
-            <Message id={'1'} msn={'This is a new message'} me={true}/>
-            <Message id={'2'} msn={'This is a new message'} me={false}/>
+            {
+                msns.map(message=>{
+                    if(currentUser?.uid){
+                        const isMe = message.sendby !== currentUser.uid
+                        return <Message id={message.date} msn={message.message} me={isMe}/>
+                    }
+                })
+            }
           </div>
           <div className="w-full h-16 bg-[#128C7E] flex justify-center items-center gap-x-2">
               <input type="text" placeholder="Write a message" className=" w-3/4 h-10 p-2 bg-[#ECE5DD] rounded-lg" value={text} onChange={handlerText} onKeyDown={handlerEnter} />
