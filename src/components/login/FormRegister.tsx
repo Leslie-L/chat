@@ -3,6 +3,7 @@ import registerUser from "../../db/services/registerEmailAndPassword";
 import useUser from "../../providers/useUser";
 import { ChangeEvent, FormEvent, useState } from "react";
 import {Dispatch, SetStateAction } from "react";
+import { User as FirebaseUser } from "firebase/auth";
 type FormSignInProps = {
     setError: Dispatch<SetStateAction<boolean>>,
     setMessageError: Dispatch<SetStateAction<string>>
@@ -50,9 +51,15 @@ function FormRegister({setError,setMessageError}:FormSignInProps) {
         console.log(email,password)
         if(password===password2){
             try {
-                const user = await registerUser(email,password);
-                setCurrentUser(user)
-                navigate('/')
+                const user = await registerUser(email, password) as unknown as FirebaseUser;
+                if(user){
+                  setCurrentUser(user)
+                  navigate('/')
+                }else{
+                  setError(true)
+                  setMessageError('This user is already created')
+                }
+                
             } catch (error) {
                 setError(true)
                 setMessageError('Check your email and password')
