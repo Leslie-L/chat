@@ -1,5 +1,14 @@
+import { useEffect, useState } from "react"
 import useCurrentChat from "../../providers/useCurrentChat"
-
+import { db } from "../../db/credentials";
+import {
+    query,
+    where,
+    collection,
+    doc,
+    onSnapshot,
+  } from "firebase/firestore";
+import readMessages from "../../db/services/Firebase/readMesages";
 type UserFriend =  {
     email:string,
     name:string,
@@ -9,9 +18,33 @@ type UserFriend =  {
   }
 function Contact(item:UserFriend) {
     const {setCurrentChat, width, setIsOpen} = useCurrentChat()
-    const handlerClick = ()=>{
+    const [countMessages, setCountMessages] = useState(0);
+    useEffect(() => {
+        const id = item.idChat 
+        if(id){
+
+            const chatRef = doc(db,"chats",id); 
+            const subCollectionREF = collection(chatRef,"chat")
+
+            const orderedSubCollectionRef = query(subCollectionREF, 
+                                                where('read','==',false),
+                                                where('sendby','==',item.uid));
+            const unsubscribe = onSnapshot(orderedSubCollectionRef,(snapshot) => {
+                const count = snapshot.docs.length;
+                setCountMessages(count);
+            
+            }, (error) => {
+                console.log("Error al obtener el snapshot:", error);
+            });
+        
+            return () => unsubscribe();
+        }
+       
+        }, []);
+    const handlerClick = async ()=>{
+        await readMessages(item.idChat,item.uid)
         setCurrentChat(item)
-        if(width<=768){
+        if(width<765){
             setIsOpen()
         }
     }
@@ -36,7 +69,11 @@ function Contact(item:UserFriend) {
                 <p className="font-bold">{item.name}</p>
                 <p>{item.email}</p>
             </div>
-            <span className="bg-[#128C7E] h-6 w-6 grid place-content-center rounded-full text-white"> 3 </span>
+            {
+                countMessages>0 &&
+                <span className="bg-[#128C7E] h-6 w-6 grid place-content-center rounded-full text-white"> {countMessages} </span>
+
+            }
         </button>
     )
 }

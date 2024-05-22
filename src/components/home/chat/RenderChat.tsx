@@ -11,6 +11,7 @@ import Message from "../Message";
 import useUser from "../../../providers/useUser";
 import addNewMessage from "../../../db/services/Firebase/addMessage";
 import { db } from "../../../db/credentials";
+import readMessages from "../../../db/services/Firebase/readMesages";
 
 type DataMessage = {
     id:string,
@@ -34,9 +35,14 @@ function RenderChat() {
         const orderedSubCollectionRef = query(subCollectionREF, orderBy("date"));
         const unsubscribe = onSnapshot(orderedSubCollectionRef,(snapshot) => {
             const newMessages = snapshot.docs.map((doc) => {
+                const read = doc.data().read;
+                const sendby = doc.data().sendby;
+                if(read===false && sendby !== currentUser?.uid){
+                    readMessages(id, sendby).then().catch()
+                }
                 const data = { ...doc.data(), id: doc.id } as DataMessage;
                 return data;
-            });
+            }) ;
             setMsns(newMessages);
         
         }, (error) => {
