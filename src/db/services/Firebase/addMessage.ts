@@ -21,7 +21,7 @@ async function addNewMessage(idChat:string, chat:DATA) {
         await setDoc(doc(subcoleccionRef),chat)
         
     } catch (error) {
-        throw new Error(error);
+        throw new Error("Error");
         
     }
     
