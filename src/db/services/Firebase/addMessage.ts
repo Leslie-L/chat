@@ -1,10 +1,12 @@
 import {updateDoc,doc, arrayUnion} from "firebase/firestore"; 
 import { db } from "../../credentials";
 type DATA= {
+    id:string,
     sendby:string | undefined,
     receptor:string | undefined,
     date: number,
     message: string,
+    read:boolean
 }
 
 async function addNewMessage(idChat:string, chat:DATA) {

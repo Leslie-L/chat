@@ -1,5 +1,5 @@
 type MessageType ={
-    id:number,
+    id:string,
     msn:string,
     me:boolean
 }

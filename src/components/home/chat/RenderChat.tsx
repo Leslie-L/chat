@@ -11,10 +11,12 @@ import addNewMessage from "../../../db/services/Firebase/addMessage";
 import { db } from "../../../db/credentials";
 
 type DataMessage = {
+    id:string,
     date:number,
     message:string,
     receptor:string,
-    sendby:string
+    sendby:string,
+    read:false
 }
 function RenderChat() {
     const {currentUser}=useUser()
@@ -30,6 +32,7 @@ function RenderChat() {
         const unsubscribe = onSnapshot(chatRef,(item) => {
             if(item.exists()){
                 const messages = item.data().chat as DataMessage[]
+               if(messages)
                 setMsns(messages)
             }
         
@@ -54,10 +57,12 @@ function RenderChat() {
         if(text.trim().length>0){
             const idChat = currentChat?.idChat;
             const data = {
+                id:crypto.randomUUID(),
                 sendby:currentUser?.uid,
                 receptor:currentChat?.uid,
                 date: (new Date).getTime(),
                 message: text.trim(),
+                read:false
             }
             if(idChat)
             try {
@@ -93,10 +98,11 @@ function RenderChat() {
           </div>
           <div className="w-full p-4 flex-grow flex-shrink bg-[#ECE5DD] overflow-x-auto scroll-bar flex flex-col justify-end">
             {
+                
                 msns.map(message=>{
                     if(currentUser?.uid){
                         const isMe = message.sendby !== currentUser.uid
-                        return <Message id={message.date} msn={message.message} me={isMe}/>
+                        return <Message key={message.id} id={message.id} msn={message.message} me={isMe}/>
                     }
                 })
             }
