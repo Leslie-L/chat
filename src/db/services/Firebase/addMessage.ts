@@ -1,7 +1,7 @@
-import {updateDoc,doc, arrayUnion} from "firebase/firestore"; 
+import {doc, collection, setDoc,} from "firebase/firestore"; 
 import { db } from "../../credentials";
 type DATA= {
-    id:string,
+    
     sendby:string | undefined,
     receptor:string | undefined,
     date: number,
@@ -11,13 +11,17 @@ type DATA= {
 
 async function addNewMessage(idChat:string, chat:DATA) {
     try {
-        const docRefChat = doc(db,"chats",idChat);
+        /*const docRefChat = doc(db,"chats",idChat);
         await updateDoc(docRefChat,{
             chat: arrayUnion(chat)
-        })
+        })*/
+       
+        const documentoRef = doc(db, 'chats', idChat);
+        const subcoleccionRef = collection(documentoRef, 'chat');
+        await setDoc(doc(subcoleccionRef),chat)
         
     } catch (error) {
-        throw new Error("Error: ");
+        throw new Error(error);
         
     }
     

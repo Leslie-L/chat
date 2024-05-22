@@ -1,6 +1,8 @@
 import { useState,useEffect } from "react";
 import {
-    
+    query,
+    orderBy,
+    collection,
     doc,
     onSnapshot,
   } from "firebase/firestore";
@@ -28,13 +30,14 @@ function RenderChat() {
     const id = currentChat?.idChat 
     if(id){
         const chatRef = doc(db,"chats",id); 
-        
-        const unsubscribe = onSnapshot(chatRef,(item) => {
-            if(item.exists()){
-                const messages = item.data().chat as DataMessage[]
-               if(messages)
-                setMsns(messages)
-            }
+        const subCollectionREF = collection(chatRef,"chat")
+        const orderedSubCollectionRef = query(subCollectionREF, orderBy("date"));
+        const unsubscribe = onSnapshot(orderedSubCollectionRef,(snapshot) => {
+            const newMessages = snapshot.docs.map((doc) => {
+                const data = { ...doc.data(), id: doc.id } as DataMessage;
+                return data;
+            });
+            setMsns(newMessages);
         
         }, (error) => {
             console.log("Error al obtener el snapshot:", error);
@@ -44,6 +47,7 @@ function RenderChat() {
     }
    
     }, []);
+
     const handlerText = (e:React.ChangeEvent<HTMLInputElement>)=>{
         const val = e.target.value;
          setText(val)
@@ -57,7 +61,6 @@ function RenderChat() {
         if(text.trim().length>0){
             const idChat = currentChat?.idChat;
             const data = {
-                id:crypto.randomUUID(),
                 sendby:currentUser?.uid,
                 receptor:currentChat?.uid,
                 date: (new Date).getTime(),
@@ -70,7 +73,7 @@ function RenderChat() {
                 console.log(data)
                 setText('')
             } catch (error) {
-                console.log("Error")
+                console.log("Error:", error)
             }
             
         }
