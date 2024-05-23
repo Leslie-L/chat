@@ -87,7 +87,7 @@ function RenderChat() {
     
     return(
         <section className="w-full h-screen flex flex-col justify-between">
-          <div className="bg-[#128C7E] h-16 flex gap-x-3 items-center px-2">
+          <div className="bg-[#128C7E] h-16 flex gap-x-3 items-center p-2">
               <div className="bg-[#25D366] h-12 w-12 rounded-full text-white flex justify-center items-center">
                     {
                         currentChat?.photo !==null &&
@@ -105,7 +105,7 @@ function RenderChat() {
                   {currentChat?.name}
               </p>
           </div>
-          <div className="w-full p-4 flex-grow flex-shrink bg-[#ECE5DD] overflow-x-auto scroll-bar flex flex-col justify-end">
+          <div className="w-full p-4 flex-grow bg-[#ECE5DD] overflow-y-auto scroll-bar grid">
             {
                 
                 msns.map(message=>{
