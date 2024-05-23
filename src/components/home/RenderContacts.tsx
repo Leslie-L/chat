@@ -61,7 +61,7 @@ function RenderContacts() {
   }, []);
 
   return (
-    <div className="overflow-x-auto scroll-bar flex-grow">
+    <div className="overflow-y-auto scroll-bar flex-grow">
       {userFriends.map((user) => (
         <Contact
           key={user.uid}
